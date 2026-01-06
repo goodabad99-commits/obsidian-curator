@@ -1,0 +1,8 @@
+@echo off
+rem Disabled to prevent repeated launcher spawn loop. Renamed by maintainer.
+rem Original file moved to start_curator.bat.disabled
+rem To re-enable, rename this file back to start_curator.bat
+
+cd C:\Users\Yousuf\Documents\vault\Scripts\Curator
+call .\.venv312\Scripts\activate
+.\.venv312\Scripts\python.exe watcher.py

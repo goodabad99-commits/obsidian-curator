@@ -1,0 +1,35 @@
+watch_folders:
+  - 00_Inbox
+  - 01_Ideas
+  - 02_Plans
+  - 03_Evidence
+
+exclude_folders:
+  - .obsidian
+  - Scripts
+  - 97_Reviews
+  - 98_Dashboards
+  - 99_Logs
+
+schema:
+  required_headings:
+    - "## Core"
+    - "## Assumptions"
+    - "## Evidence"
+    - "## Links"
+    - "## Next Actions"
+
+linking:
+  max_links_per_note: 5
+  links_section_heading: "## Links"
+  only_link_existing_notes: true
+
+indexing:
+  db_dir_relative: "Scripts/_vectordb"
+  collection: "vault"
+  chunk_tokens: 450
+  overlap_tokens: 80
+
+audit_log: "99_Logs/curator_audit.md"
+review_folder: "97_Reviews"
+watcher_kill_scan_seconds: 5
