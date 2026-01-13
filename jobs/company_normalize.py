@@ -37,15 +37,20 @@ def build_note(entry, retrieved_at):
         val = entry.get(opt)
         if val:
             frontmatter[opt] = val
+    owners = entry.get("owners")
+    subs = entry.get("subsidiaries")
+    partners = entry.get("partners")
+    customers = entry.get("customers")
+    gov_ties = entry.get("government_ties")
     body_sections = {
         "## Core": entry.get("description") or "",
         "## Operations": entry.get("operations") or "",
         "## Relationships": "\n".join(filter(None, [
-            f"- Owners: {entry.get(owners)}" if entry.get("owners") else "",
-            f"- Subsidiaries: {entry.get(subsidiaries)}" if entry.get("subsidiaries") else "",
-            f"- Partners: {entry.get(partners)}" if entry.get("partners") else "",
-            f"- Customers: {entry.get(customers)}" if entry.get("customers") else "",
-            f"- Government ties: {entry.get(government_ties)}" if entry.get("government_ties") else "",
+            f"- Owners: {owners}" if owners else "",
+            f"- Subsidiaries: {subs}" if subs else "",
+            f"- Partners: {partners}" if partners else "",
+            f"- Customers: {customers}" if customers else "",
+            f"- Government ties: {gov_ties}" if gov_ties else "",
         ])).strip(),
         "## Evidence": entry.get("evidence") or "",
         "## Links": "",
@@ -80,7 +85,7 @@ def main():
     total_raw = len(list(RAW_ROOT.rglob("*.json")))
     dash = [
         "# Company Ingestion Status",
-        f"- last_run: {time.strftime(%Y-%m-%dT%H:%M:%SZ, time.gmtime())}",
+        f"- last_run: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}",
         f"- notes: {total_notes}",
         f"- raw_bundles: {total_raw}",
     ]

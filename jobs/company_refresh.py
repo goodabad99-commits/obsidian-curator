@@ -34,13 +34,14 @@ def main():
     review_tail = ""
     if REVIEW.exists():
         review_tail = "\n".join(REVIEW.read_text(encoding="utf-8").splitlines()[-10:])
+    review_tail = review_tail or "empty"
     content = [
         "# Company Ingestion Status",
         f"- last_run: {last_run}",
         f"- notes: {len(notes)}",
         f"- raw_bundles: {len(raw_bundles)}",
         f"- confidence: {json.dumps(counts, ensure_ascii=False)}",
-        f"- review_tail:\n{review_tail or empty}",
+        f"- review_tail:\n{review_tail}",
     ]
     DASH.parent.mkdir(parents=True, exist_ok=True)
     DASH.write_text("\n".join(content) + "\n", encoding="utf-8")
