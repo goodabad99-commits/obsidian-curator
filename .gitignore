@@ -1,0 +1,30 @@
+# Secrets
+.env
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+ENV/
+env/
+
+# Runtime artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.watcher.lock
+
+# Deploy artifacts
+releases/
+current
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Weird Windows path artifacts that should never be here
+C:\\Users\\*
