@@ -193,12 +193,15 @@ EXISTING TITLES:
 NOTE CONTENT:
 {note_text[:4000]}
 """
-    resp = get_client().chat.completions.create(
-        model=CHAT_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    raw = resp.choices[0].message.content.strip()
-    # Try to parse JSON array
+    try:
+        resp = get_client().chat.completions.create(
+            model=CHAT_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        raw = resp.choices[0].message.content.strip()
+    except Exception as exc:
+        audit_line(f"link_suggest_error: {exc}")
+        return []
     try:
         arr = json.loads(raw)
         if isinstance(arr, list):
@@ -253,10 +256,13 @@ def update_embeddings_for_file(rel_path: str, md_text: str):
 
     # Embed and upsert
     if chunks:
-        emb = get_client().embeddings.create(model=EMBED_MODEL, input=chunks)
-        vectors = [d.embedding for d in emb.data]
-        metas = [{"path": rel_path, "chunk": i} for i in range(len(chunks))]
-        col.upsert(ids=ids, documents=chunks, metadatas=metas, embeddings=vectors)
+        try:
+            emb = get_client().embeddings.create(model=EMBED_MODEL, input=chunks)
+            vectors = [d.embedding for d in emb.data]
+            metas = [{"path": rel_path, "chunk": i} for i in range(len(chunks))]
+            col.upsert(ids=ids, documents=chunks, metadatas=metas, embeddings=vectors)
+        except Exception as exc:
+            audit_line(f"embedding_error {rel_path}: {exc}")
 
 def classify_link_reason(note_text: str, target_title: str) -> str:
     """
