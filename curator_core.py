@@ -10,7 +10,6 @@ try:
     import chromadb  # type: ignore
 except Exception:
     chromadb = None  # type: ignore
-from chromadb.config import Settings
 from dotenv import load_dotenv
 from openai import OpenAI
 from apply_links import append_to_review, apply_links_safe
