@@ -1,0 +1,46 @@
+name: VM Runner (SSH)
+
+on:
+  push:
+    branches: [ "release" ]
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Run allowlisted VM commands
+        env:
+          VM_HOST: ${{ secrets.VM_HOST }}
+          VM_USER: ${{ secrets.VM_USER }}
+        run: |
+          set -euo pipefail
+          ssh "${VM_USER}@${VM_HOST}" << "SSH_EOF"
+            set -euo pipefail
+            echo "=== whoami ==="
+            whoami
+            hostname
+            date -u
+
+            echo "=== deploy via agent ==="
+            sudo /bin/systemctl start curator-agent.service
+            sudo /bin/journalctl -u curator-agent.service -n 80 --no-pager || true
+
+            echo "=== restart curator ==="
+            sudo /bin/systemctl reset-failed obsidian-curator || true
+            sudo /bin/systemctl restart obsidian-curator || true
+            sudo /bin/systemctl status obsidian-curator --no-pager || true
+            sudo /bin/journalctl -u obsidian-curator.service -n 120 --no-pager || true
+SSH_EOF
