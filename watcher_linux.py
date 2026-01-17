@@ -109,7 +109,7 @@ def generate_weekly_summary():
 
 
 DEBOUNCE_SECONDS = 2.0
-EARTBEAT_SECONDS = 30.0
+HEARTBEAT_SECONDS = 30.0
 REVIEW_SCAN_SECONDS = 5.0
 
 # Import your existing core logic (these should be platform-neutral)
