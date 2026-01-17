@@ -165,8 +165,11 @@ def main():
     obs = Observer()
     for folder in WATCH_FOLDERS:
         obs.schedule(handler, str(VAULT / folder), recursive=True)
-
     obs.start()
+
+    # ANCHOR_AFTER_OBS_START_v1
+    print("ANCHOR: after obs.start() - entering main loop", flush=True)
+    time.sleep(2)
 
     last_processed = {}
     last_heartbeat = 0.0
