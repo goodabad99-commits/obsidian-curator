@@ -11,7 +11,10 @@ try:
 except Exception:
     chromadb = None  # type: ignore
 from dotenv import load_dotenv
-from openai import OpenAI
+try:
+    from openai import OpenAI  # type: ignore
+except Exception:
+    OpenAI = None  # type: ignore
 from apply_links import append_to_review, apply_links_safe
 
 
