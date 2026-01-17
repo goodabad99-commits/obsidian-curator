@@ -22,10 +22,14 @@ HERE = Path(__file__).parent
 load_dotenv(HERE / ".env")
 
 API_KEY = os.getenv("OPENAI_API_KEY")
-VAULT = Path(os.getenv("VAULT_PATH", "")).resolve()
+
 EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-3-small")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4.1-mini")
-AUDIT_LOG = Path(r"C:\Users\Yousuf\Documents\vault\99_Logs\curator_audit.md")
+
+
+VAULT_PATH = os.getenv("VAULT_PATH", "/opt/obsidian-vault")
+VAULT = Path(VAULT_PATH).resolve()
+AUDIT_LOG = VAULT / "99_Logs" / "curator_audit.md"
 
 enc = tiktoken.get_encoding("cl100k_base")
 _CLIENT = None
