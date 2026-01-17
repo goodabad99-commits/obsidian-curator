@@ -2,8 +2,14 @@ import os, re, json, time
 from datetime import datetime
 from pathlib import Path
 import yaml
-import tiktoken
-import chromadb
+try:
+    import tiktoken  # type: ignore
+except Exception:
+    tiktoken = None  # type: ignore
+try:
+    import chromadb  # type: ignore
+except Exception:
+    chromadb = None  # type: ignore
 from chromadb.config import Settings
 from dotenv import load_dotenv
 from openai import OpenAI
